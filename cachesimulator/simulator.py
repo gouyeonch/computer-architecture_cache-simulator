@@ -90,7 +90,7 @@ class Simulator(object):
     def run_simulation(self, num_blocks_per_set, num_words_per_block,
                        cache_size, replacement_policy, num_addr_bits,
                        word_addrs):
-                       
+        
         num_blocks = cache_size // num_words_per_block
         num_sets = num_blocks // num_blocks_per_set
 
@@ -107,18 +107,18 @@ class Simulator(object):
         refs = self.get_addr_refs(
             word_addrs, num_addr_bits,
             num_offset_bits, num_index_bits, num_tag_bits)
-
-        #태그 더 받아서 값 설정하고
-        # 캐시 하나 더 만들고
         
-        #여기가 쉽지 않음
         cache = Cache(
+            num_sets=num_sets,
+            num_index_bits=num_index_bits)
+        
+        cache_2l = Cache(
             num_sets=num_sets,
             num_index_bits=num_index_bits)
 
         cache.read_refs(
             num_blocks_per_set, num_words_per_block,
-            replacement_policy, refs)
+            replacement_policy, refs, cache_2l)
         
         #위 캐시 클래스는 그냥 1level을 가정하고 만듬 캐시 클래스이다
         #cache 클래스에서 read하는 부분에 미스가 나면 cach2로 전송 시키는 알고리즘을 적용 시켜야 할 듯
