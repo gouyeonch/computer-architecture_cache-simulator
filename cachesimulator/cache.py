@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from cachesimulator.bin_addr import BinaryAddress
-from cachesimulator.reference import ReferenceCacheStatus
-from cachesimulator.word_addr import WordAddress
+from bin_addr import BinaryAddress
+from reference import ReferenceCacheStatus
+from word_addr import WordAddress
 
 
 class Cache(dict):
@@ -14,12 +14,16 @@ class Cache(dict):
         # used to most
         self.recently_used_addrs = []
 
+        #캐시가 있으면 해당 캐시로 초기화 하고
+        #없으면 세트 개수 만큼 생성하여 초기화 한다.
+        #세트가 한개이고 인덱스가 3비트이면 8개 만큼 생성될듯
         if cache is not None:
             self.update(cache)
         else:
             for i in range(num_sets):
                 index = BinaryAddress(
                     word_addr=WordAddress(i), num_addr_bits=num_index_bits)
+                #자기 자신을 배열로 선언?
                 self[index] = []
 
     # Every time we see an address, place it at the top of the

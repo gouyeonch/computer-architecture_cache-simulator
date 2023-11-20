@@ -3,8 +3,8 @@
 from collections import OrderedDict
 from enum import Enum
 
-from cachesimulator.bin_addr import BinaryAddress
-from cachesimulator.word_addr import WordAddress
+from bin_addr import BinaryAddress
+from word_addr import WordAddress
 
 
 # An address reference consisting of the address and all of its components
@@ -13,6 +13,8 @@ class Reference(object):
     def __init__(self, word_addr, num_addr_bits,
                  num_offset_bits, num_index_bits, num_tag_bits):
         self.word_addr = WordAddress(word_addr)
+        # BinaryAddress를 통해 WordAddr를 더 쉽게 만들고 추출하기 쉬운 메서드 제공
+        # ex) 180 -> 1011 0100 여기서 오프셋, 인덱스, 테그 추출
         self.bin_addr = BinaryAddress(
             word_addr=self.word_addr, num_addr_bits=num_addr_bits)
         self.offset = self.bin_addr.get_offset(num_offset_bits)

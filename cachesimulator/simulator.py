@@ -3,10 +3,10 @@
 import math
 import shutil
 
-from cachesimulator.bin_addr import BinaryAddress
-from cachesimulator.cache import Cache
-from cachesimulator.reference import Reference
-from cachesimulator.table import Table
+from bin_addr import BinaryAddress
+from cache import Cache
+from reference import Reference
+from table import Table
 
 # The names of all reference table columns
 REF_COL_NAMES = ('WordAddr', 'BinAddr', 'Tag', 'Index', 'Offset', 'Hit/Miss')
@@ -90,22 +90,28 @@ class Simulator(object):
     def run_simulation(self, num_blocks_per_set, num_words_per_block,
                        cache_size, replacement_policy, num_addr_bits,
                        word_addrs):
-
+                       
         num_blocks = cache_size // num_words_per_block
         num_sets = num_blocks // num_blocks_per_set
 
         # Ensure that the number of bits used to represent each address is
         # always large enough to represent the largest address
+        # 메모리 비트 계산
         num_addr_bits = max(num_addr_bits, int(math.log2(max(word_addrs))) + 1)
 
         num_offset_bits = int(math.log2(num_words_per_block))
         num_index_bits = int(math.log2(num_sets))
         num_tag_bits = num_addr_bits - num_index_bits - num_offset_bits
 
+        # Word-addrs의 입력 값들을 분석하기 쉽도록 Reference 인스턴스의 배열을 얻는 과정
         refs = self.get_addr_refs(
             word_addrs, num_addr_bits,
             num_offset_bits, num_index_bits, num_tag_bits)
 
+        #태그 더 받아서 값 설정하고
+        # 캐시 하나 더 만들고
+        
+        #여기가 쉽지 않음
         cache = Cache(
             num_sets=num_sets,
             num_index_bits=num_index_bits)
@@ -113,6 +119,9 @@ class Simulator(object):
         cache.read_refs(
             num_blocks_per_set, num_words_per_block,
             replacement_policy, refs)
+        
+        #위 캐시 클래스는 그냥 1level을 가정하고 만듬 캐시 클래스이다
+        #cache 클래스에서 read하는 부분에 미스가 나면 cach2로 전송 시키는 알고리즘을 적용 시켜야 할 듯
 
         # The character-width of all displayed tables
         # Attempt to fit table to terminal width, otherwise use default of 80
