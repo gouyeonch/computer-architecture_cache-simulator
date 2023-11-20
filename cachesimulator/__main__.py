@@ -17,6 +17,12 @@ def parse_cli_args():
         help='the size of the cache in words')
 
     parser.add_argument(
+        '--cache2-size',
+        type=int,
+        required=True,
+        help='the size of the cache in words')
+
+    parser.add_argument(
         '--num-blocks-per-set',
         type=int,
         default=1,

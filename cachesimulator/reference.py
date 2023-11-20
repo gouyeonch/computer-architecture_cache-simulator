@@ -45,7 +45,7 @@ class ReferenceCacheStatus(Enum):
     # Define how reference statuses are displayed in simulation results
     def __str__(self):
         if self.value == ReferenceCacheStatus.hit.value:
-            return 'HIT'
+            return '1-level-HIT'
         else:
             return 'miss'
 
